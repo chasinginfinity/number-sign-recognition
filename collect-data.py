@@ -2,6 +2,22 @@ import cv2
 import numpy as np
 import os
 
+if not os.path.exists("data"):
+    os.makedirs("data")
+    os.makedirs("data/train/0")
+    os.makedirs("data/train/1")
+    os.makedirs("data/train/2")
+    os.makedirs("data/train/3")
+    os.makedirs("data/train/4")
+    os.makedirs("data/train/5")
+    os.makedirs("data/test/0")
+    os.makedirs("data/test/1")
+    os.makedirs("data/test/2")
+    os.makedirs("data/test/3")
+    os.makedirs("data/test/4")
+    os.makedirs("data/test/5")
+    
+
 # Train or test 
 mode = 'test'
 directory = 'data/'+mode+'/'
