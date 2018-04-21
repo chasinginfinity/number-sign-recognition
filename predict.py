@@ -5,12 +5,12 @@ import cv2
 import sys, os
 
 # Loading the model
-json_file = open("model.json", "r")
+json_file = open("model-bw.json", "r")
 model_json = json_file.read()
 json_file.close()
 loaded_model = model_from_json(model_json)
 # load weights into new model
-loaded_model.load_weights("model.h5")
+loaded_model.load_weights("model-bw.h5")
 print("Loaded model from disk")
 
 cap = cv2.VideoCapture(0)
@@ -36,9 +36,12 @@ while True:
     roi = frame[y1:y2, x1:x2]
     
     # Resizing the ROI so it can be fed to the model for prediction
-    test_image = cv2.resize(roi, (64, 64)) 
+    roi = cv2.resize(roi, (64, 64)) 
+    roi = cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)
+    _, test_image = cv2.threshold(roi, 120, 255, cv2.THRESH_BINARY)
+    cv2.imshow("test", test_image)
     # Batch of 1
-    result = loaded_model.predict(test_image.reshape(1, 64, 64, 3))
+    result = loaded_model.predict(test_image.reshape(1, 64, 64, 1))
     prediction = {'ZERO': result[0][0], 
                   'ONE': result[0][1], 
                   'TWO': result[0][2],
